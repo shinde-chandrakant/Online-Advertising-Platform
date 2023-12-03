@@ -97,9 +97,7 @@ requirements that will lead to a winning solution.
     Writing Ad Slot Budget manager using MySQL Connector. Here we need to
     write a python script for slot
     budget calculation and updation. Here we also need to set up a proper
-    cron job. In order to learn more about
-    cron job, we can refer to the subsequent session of <strong>Additional
-        Resources</strong>.&nbsp;
+    cron job.
 </p>
 
 <p><strong>Task 4:&nbsp;</strong>

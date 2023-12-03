@@ -24,33 +24,19 @@ database_username, database_password,database_name):
 
 
     # Process single row
-    def process_row(self, text, category, keywords, campaign_id, status, target_gender,
-                 target_age_start, target_age_end, target_city, target_state,
-                 target_country, target_income_bucket, target_device, cpc, cpa,
-                 cpm, budget, current_slot_budget, date_range_start,
-                 date_range_end, time_range_start, time_range_end):
+    def process_row(self, json_):
         # Get the db cursor
         db_cursor = self.db.cursor()
-        # DB query for supporting UPSERT operation
+        # DB query for supporting INSERT, UPDATE operation
         sql = """
-            INSERT INTO ads(
-                text, category, keywords, campaign_id, status, target_gender,
-                 target_age_start, target_age_end, target_city, target_state,
-                 target_country, target_income_bucket, target_device, cpc, cpa,
-                 cpm, budget, current_slot_budget, date_range_start,
-                 date_range_end, time_range_start, time_range_end) 
-                VALUES (
-                    %s, %s, %s, %s, %s, %s, %d, %d, %s, %s, %s, %s, %s, %.2f, %.2f, %.2f, %.2f, %.2f, %s, %s, %s, %s)
+            INSERT INTO ads(text, category, keywords, campaign_id, status, target_gender, target_age_start, target_age_end, target_city, target_state, target_country, target_income_bucket, target_device, cpc, cpa, cpm, budget, current_slot_budget, date_range_start, date_range_end, time_range_start, time_range_end) 
+                VALUES (%s, %s, %s, %s, %s, %s, %d, %d, %s, %s, %s, %s, %s, %.2f, %.2f, %.2f, %.2f, %.2f, %s, %s, %s, %s)
                 ON DUPLICATE KEY
                 UPDATE text =%s, category =%s,keywords =%s,status =%s,targetGender =%s,targetAgeStart =%s,targetAgeEnd =%s,targetCity =%s,targetState =%s,targetCountry =%s,targetIncomeBucket =%s,targetDevice =%s,cpc =%s,cpa =%s,cpm =%s, budget =%s,currentSlotBudget =%s,dateRangeStart =%s, dateRangeEnd =%s,timeRangeStart =%s,timeRangeEnd =%s
         """
-        val = (text, category, keywords, campaign_id, status, target_gender,
-                 target_age_start, target_age_end, target_city, target_state,
-                 target_country, target_income_bucket, target_device, cpc, cpa,
-                 cpm, budget, current_slot_budget, date_range_start,
-                 date_range_end, time_range_start, time_range_end)
+        val = (json_["text"],json_["category"],json_["keywords"],json_["campaign_id"],json_["status"],json_["target_gender"],json_["target_age_range"]["start"],json_["target_age_range"]["end"],json_["target_city"],json_["target_state"],json_["target_country"],json_["target_income_bucket"],json_["target_device"],json_["cpc"],json_["cpa"],json_["cpm"],json_["budget"],json_["current_slot_budget"],json_["date_range"]["start"],json_["date_range"]["end"],json_["time_range"]["start"],json_["time_range"]["end"],json_["text"],json_["category"],json_["keywords"],json_["status"],json_["target_gender"],json_["target_age_range"]["start"],json_["target_age_range"]["end"],json_["target_city"],json_["target_state"],json_["target_country"],json_["target_income_bucket"],json_["target_device"],json_["cpc"],json_["cpa"],json_["cpm"],json_["budget"],json_["current_slot_budget"],json_["date_range"]["start"],json_["date_range"]["end"],json_["time_range"]["start"],json_["time_range"]["end"])
         
-        db_cursor.execute(sql, (val))
+        db_cursor.execute(sql, val)
         # Commit the operation, so that it reflects globally
         self.db.commit()
 
