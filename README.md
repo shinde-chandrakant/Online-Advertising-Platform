@@ -1,22 +1,32 @@
-<p align="center">
+<!-- <p align="center">
   <a href="" rel="noopener">
    <img src="assets\img\giphy.webp" alt="Project logo"></a>
 </p>
+<p align="center">
+  <a href="" rel="noopener">
+   <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZm1rN2g5cWFpMWY4M2Q0cXN6enczZnJtN21wNHhraHBpajlqdTEzMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l2JJrTTQyOIRM8R0c/giphy.gif" alt="Project logo"></a>
+</p> -->
+
+<p align="center">
+  <a href="" rel="noopener">
+   <img src="https://media.giphy.com/media/W2KZgZo97jtC313Hn9/giphy.gif" alt="Project logo"></a>
+</p>
+
 <h3 align="center">Online Advertising Platform  - (WIP) </h3>
 
 <div align="center">
 
 
-![ViewCount](https://views.whatilearened.today/views/github/shinde-chandrakant/Online-Advertising-Platform.svg?cache=remove)
-![GitHub top language](https://img.shields.io/github/languages/top/shinde-chandrakant/Online-Advertising-Platform?style=flat)
-![GitHub language count](https://img.shields.io/github/languages/count/shinde-chandrakant/Online-Advertising-Platform?style=flat)
-![Stars Badge](https://img.shields.io/github/stars/shinde-chandrakant/Online-Advertising-Platform?style=flat)
-![Forks Badge](https://img.shields.io/github/forks/shinde-chandrakant/Online-Advertising-Platform?style=flat)
-![Pull Requests Badge](https://img.shields.io/github/issues-pr/shinde-chandrakant/Online-Advertising-Platform?style=flat)
-[![Total Downloads](https://img.shields.io/github/downloads/shinde-chandrakant/Online-Advertising-Platform/total.svg)](https://github.com/shinde-chandrakant/Online-Advertising-Platform/releases/)
+![ViewCount](https://views.whatilearened.today/views/github/shinde-chandrakant/online-advertising-platform.svg?cache=remove)
+![GitHub top language](https://img.shields.io/github/languages/top/shinde-chandrakant/online-advertising-platform?style=flat)
+![GitHub language count](https://img.shields.io/github/languages/count/shinde-chandrakant/online-advertising-platform?style=flat)
+![Stars Badge](https://img.shields.io/github/stars/shinde-chandrakant/online-advertising-platform?style=flat)
+![Forks Badge](https://img.shields.io/github/forks/shinde-chandrakant/online-advertising-platform?style=flat)
+<!-- ![Pull Requests Badge](https://img.shields.io/github/issues-pr/shinde-chandrakant/online-advertising-platform?style=flat)
+[![Total Downloads](https://img.shields.io/github/downloads/shinde-chandrakant/online-advertising-platform/total.svg)](https://github.com/shinde-chandrakant/online-advertising-platform/releases/) -->
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/shinde-chandrakant/Online-Advertising-Platform.svg)](https://github.com/shinde-chandrakant/Online-Advertising-Platform/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/shinde-chandrakant/Online-Advertising-Platform.svg)](https://github.com/shinde-chandrakant/Online-Advertising-Platform/pulls)
+[![GitHub Issues](https://img.shields.io/github/issues/shinde-chandrakant/online-advertising-platform.svg)](https://github.com/shinde-chandrakant/online-advertising-platform/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/shinde-chandrakant/online-advertising-platform.svg)](https://github.com/shinde-chandrakant/online-advertising-platform/pulls)
 
 </div>
 
@@ -205,7 +215,7 @@ Add notes about how to use the system.
 
 - [@shinde-chandrakant](https://github.com/shinde-chandrakant) - Idea & Initial work
 
-See also the list of [contributors](https://github.com/shinde-chandrakant/Online-Advertising-Platform/contributors)
+See also the list of [contributors](https://github.com/shinde-chandrakant/online-advertising-platform/contributors)
 who participated in this project.
 
 <!-- ## 🎉 Acknowledgments <a name = "acknowledgments"></a>
