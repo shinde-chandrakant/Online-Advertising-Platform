@@ -8,11 +8,10 @@ from pykafka.common import OffsetType
 from pykafka.exceptions import SocketDisconnectedError, LeaderNotAvailable
 
 class KafkaMySQLSink:
-    def __init__(self, kafka_bootstrap_server, kafka_topic_name, database_host,
-database_username, database_password,database_name):
+    def __init__(self, kafka_bootstrap_server, kafka_topic_name, database_host,database_username, database_password,database_name):
         # Initialize Kafka Consumer
         kafka_client = KafkaClient(kafka_bootstrap_server)
-        self.consumer = kafka_client.topics[kafka_topic_name].get_simple_consumer(consumer_group="category",auto_offset_reset=OffsetType.LATEST)
+        self.consumer = kafka_client.topics[kafka_topic_name].get_simple_consumer(consumer_group="campaign_id",auto_offset_reset=OffsetType.LATEST)
 
         # Initialize MySQL database connection
         self.db = mysql.connector.connect(
@@ -24,20 +23,34 @@ database_username, database_password,database_name):
 
 
     # Process single row
-    def process_row(self, json_):
+    # def process_row(self, json_):
+    #     # Get the db cursor
+    #     db_cursor = self.db.cursor()
+    #     # DB query for supporting UPSERT operation
+    #     sql = """
+    #     INSERT INTO ads(text, category, keywords, campaign_id, status, target_gender, target_age_start, target_age_end, target_city, target_state, target_country, target_income_bucket, target_device, cpc, cpa, cpm, budget, current_slot_budget, date_range_start, date_range_end, time_range_start, time_range_end) 
+    #     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    #     ON DUPLICATE KEY
+    #     UPDATE text=%s, category=%s, keywords=%s, status=%s, targetGender=%s, targetAgeStart=%s, targetAgeEnd=%s, targetCity=%s, targetState=%s, targetCountry=%s, targetIncomeBucket=%s, targetDevice=%s, cpc=%s, cpa=%s, cpm=%s, budget=%s, currentSlotBudget=%s, dateRangeStart=%s, dateRangeEnd=%s, timeRangeStart=%s, timeRangeEnd=%s
+    #     """
+
+    #     json_["text"] = json_["text"].replace("'", "")
+
+    #     val = (json_["text"],json_["category"],json_["keywords"],json_["campaign_id"],json_["status"],json_["target_gender"],json_["target_age_range"]["start"],json_["target_age_range"]["end"],json_["target_city"],json_["target_state"],json_["target_country"],json_["target_income_bucket"],json_["target_device"],json_["cpc"],json_["cpa"],json_["cpm"],json_["budget"],json_["current_slot_budget"],json_["date_range"]["start"],json_["date_range"]["end"],json_["time_range"]["start"],json_["time_range"]["end"],json_["text"],json_["category"],json_["keywords"],json_["status"],json_["target_gender"],json_["target_age_range"]["start"],json_["target_age_range"]["end"],json_["target_city"],json_["target_state"],json_["target_country"],json_["target_income_bucket"],json_["target_device"],json_["cpc"],json_["cpa"],json_["cpm"],json_["budget"],json_["current_slot_budget"],json_["date_range"]["start"],json_["date_range"]["end"],json_["time_range"]["start"],json_["time_range"]["end"])
+        
+    #     db_cursor.execute(sql, val)
+    #     # Commit the operation, so that it reflects globally
+    #     self.db.commit()
+
+    def process_row(self, AdsInfo):
         # Get the db cursor
         db_cursor = self.db.cursor()
-        # DB query for supporting INSERT, UPDATE operation
-        sql = """
-            INSERT INTO ads(text, category, keywords, campaign_id, status, target_gender, target_age_start, target_age_end, target_city, target_state, target_country, target_income_bucket, target_device, cpc, cpa, cpm, budget, current_slot_budget, date_range_start, date_range_end, time_range_start, time_range_end) 
-                VALUES (%s, %s, %s, %s, %s, %s, %d, %d, %s, %s, %s, %s, %s, %.2f, %.2f, %.2f, %.2f, %.2f, %s, %s, %s, %s)
-                ON DUPLICATE KEY
-                UPDATE text =%s, category =%s,keywords =%s,status =%s,targetGender =%s,targetAgeStart =%s,targetAgeEnd =%s,targetCity =%s,targetState =%s,targetCountry =%s,targetIncomeBucket =%s,targetDevice =%s,cpc =%s,cpa =%s,cpm =%s, budget =%s,currentSlotBudget =%s,dateRangeStart =%s, dateRangeEnd =%s,timeRangeStart =%s,timeRangeEnd =%s
-        """
-        val = (json_["text"],json_["category"],json_["keywords"],json_["campaign_id"],json_["status"],json_["target_gender"],json_["target_age_range"]["start"],json_["target_age_range"]["end"],json_["target_city"],json_["target_state"],json_["target_country"],json_["target_income_bucket"],json_["target_device"],json_["cpc"],json_["cpa"],json_["cpm"],json_["budget"],json_["current_slot_budget"],json_["date_range"]["start"],json_["date_range"]["end"],json_["time_range"]["start"],json_["time_range"]["end"],json_["text"],json_["category"],json_["keywords"],json_["status"],json_["target_gender"],json_["target_age_range"]["start"],json_["target_age_range"]["end"],json_["target_city"],json_["target_state"],json_["target_country"],json_["target_income_bucket"],json_["target_device"],json_["cpc"],json_["cpa"],json_["cpm"],json_["budget"],json_["current_slot_budget"],json_["date_range"]["start"],json_["date_range"]["end"],json_["time_range"]["start"],json_["time_range"]["end"])
-        
-        db_cursor.execute(sql, val)
-        # Commit the operation, so that it reflects globally
+        # DB query for supporting UPSERT operation (update + insert)
+        sql = ("INSERT INTO ads(text,category,keywords,campaignID,status,targetGender,targetAgeStart,targetAgeEnd,targetCity,targetState,targetCountry,targetIncomeBucket,targetDevice,cpc,cpa,cpm,budget,currentSlotBudget,dateRangeStart,dateRangeEnd,timeRangeStart,timeRangeEnd) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE  text =%s, category =%s,keywords =%s,status =%s,targetGender =%s,targetAgeStart =%s,targetAgeEnd =%s,targetCity =%s,targetState =%s,targetCountry =%s,targetIncomeBucket =%s,targetDevice =%s,cpc =%s,cpa =%s,cpm =%s, budget =%s,currentSlotBudget =%s,dateRangeStart =%s, dateRangeEnd =%s,timeRangeStart =%s,timeRangeEnd =%s");
+        AdsInfo["text"] = AdsInfo["text"].replace("'", "")
+        val = (AdsInfo["text"],AdsInfo["category"],AdsInfo["keywords"],AdsInfo["campaign_id"],AdsInfo["status"],AdsInfo["target_gender"],AdsInfo["target_age_range"]["start"],AdsInfo["target_age_range"]["end"],AdsInfo["target_city"],AdsInfo["target_state"],AdsInfo["target_country"],AdsInfo["target_income_bucket"],AdsInfo["target_device"],AdsInfo["cpc"],AdsInfo["cpa"],AdsInfo["cpm"],AdsInfo["budget"],AdsInfo["current_slot_budget"],AdsInfo["date_range"]["start"],AdsInfo["date_range"]["end"],AdsInfo["time_range"]["start"],AdsInfo["time_range"]["end"],AdsInfo["text"],AdsInfo["category"],AdsInfo["keywords"],AdsInfo["status"],AdsInfo["target_gender"],AdsInfo["target_age_range"]["start"],AdsInfo["target_age_range"]["end"],AdsInfo["target_city"],AdsInfo["target_state"],AdsInfo["target_country"],AdsInfo["target_income_bucket"],AdsInfo["target_device"],AdsInfo["cpc"],AdsInfo["cpa"],AdsInfo["cpm"],AdsInfo["budget"],AdsInfo["current_slot_budget"],AdsInfo["date_range"]["start"],AdsInfo["date_range"]["end"],AdsInfo["time_range"]["start"],AdsInfo["time_range"]["end"])
+        db_cursor.execute(sql, (val) )    
+        # We will commit the operation, so that it reflects globally
         self.db.commit()
 
 
@@ -64,7 +77,7 @@ database_username, database_password,database_name):
         try:
             for queue_message in self.consumer:
                 if queue_message is not None:
-                    msg = json.loads(queue_message.value())
+                    msg = json.loads(queue_message.value)
                     AdsInfo = dervied_attribute(msg)
                     sep = " | "
                     print(AdsInfo["campaign_id"],sep,AdsInfo["action"],sep,AdsInfo["status"])
@@ -87,7 +100,7 @@ database_username, database_password,database_name):
 if __name__ == "__main__":
     # Validate Command line arguments
     if len(sys.argv) != 7:
-        print("Usage: kafka_mysql.py <kafka_bootstrap_server> <kafka_topic> <database_host> ""<database_username> <database_password> <database_name>")
+        print("Usage: ad_manager.py <kafka_bootstrap_server> <kafka_topic> <database_host> ""<database_username> <database_password> <database_name>")
         exit(-1)
 
     kafka_bootstrap_server = sys.argv[1]

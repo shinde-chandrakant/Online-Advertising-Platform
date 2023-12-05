@@ -149,7 +149,7 @@ if __name__ == "__main__":
             return "pong"
 
 
-        @app.route('/user/<user_id>/serve', methods=['GET'])
+        @app.route('/ad/user/<user_id>/serve', methods=['GET'])
         def serve(user_id):
             query_params = request.args
 
@@ -192,7 +192,7 @@ if __name__ == "__main__":
 
 
         # Start Flask application
-        app.run(host="localhost", port=5000)
+        app.run(host="0.0.0.0", port=5000)
     
     except KeyboardInterrupt:
         print("press control-c again to quit")
