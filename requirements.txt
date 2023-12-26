@@ -1,2 +1,6 @@
-pyspark==3.2.1
-pandas==1.0.5
+pip install requests==2.31.0
+pip install pykafka==2.8.0
+pip install urllib3==1.26.6
+pip install Flask==2.2.5
+pip install mysql-connector-python==8.0.33
+pip install kafka-python

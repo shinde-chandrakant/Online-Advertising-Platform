@@ -5,7 +5,7 @@ from flask import request, jsonify
 import uuid
 from flask import abort
 import mysql.connector
-import datetime
+from datetime import datetime, timedelta
 
 
 # AdServer Class with all neccessary actions to be performed within the class
@@ -62,9 +62,21 @@ class AdServer:
         # Insert statement add into 
         if len(self.adDetails) != 0 and len(self.DecidedAuctionCost[0]) != 0:
 
-            currentTimeStamp = datetime.datetime.now().replace(microsecond=0)
-            startDateTime = datetime.datetime.combine(self.adDetails[0][18],(datetime.datetime.min + self.adDetails[0][20]).time())
-            endDateTime = datetime.datetime.combine(self.adDetails[0][19],(datetime.datetime.min + self.adDetails[0][21]).time())
+            time_str = self.adDetails[0][20]
+            time_obj = datetime.strptime(time_str, '%H:%M:%S').time()
+            time_start = timedelta(hours=time_obj.hour, minutes=time_obj.minute, seconds=time_obj.second)
+            date_str = self.adDetails[0][18]
+            date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
+
+            currentTimeStamp = datetime.now().replace(microsecond=0)
+            startDateTime = datetime.combine(date_obj,(datetime.min + time_start).time())
+            
+            time_str = self.adDetails[0][21]
+            time_obj = datetime.strptime(time_str, '%H:%M:%S').time()
+            time_end = timedelta(hours=time_obj.hour, minutes=time_obj.minute, seconds=time_obj.second)
+            date_str = self.adDetails[0][19]
+            date_obj = datetime.strptime(date_str, '%Y-%m-%d').date()
+            endDateTime = datetime.combine(date_obj,(datetime.min + time_end).time())
             
             # SQL insert Operation Statement
             sql = ("INSERT INTO served_ads("
